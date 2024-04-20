@@ -4,7 +4,6 @@ const User = db.user;
 const Role = db.role;
 
 exports.getUsers = async (req, res) => {
-  console.log(req.query);
   try {
     let data = await User.findAll({
       attributes: {
@@ -36,9 +35,8 @@ exports.getUser = async (req, res) => {
       where: {
         id: {
           [Op.eq]: req.params.id
-
         }
-      }
+      },
     })
     res.status(200).json({
       response: data
