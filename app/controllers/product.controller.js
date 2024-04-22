@@ -4,21 +4,27 @@ const Product = db.product;
 
 exports.getProducts = async (req, res) => {
     try {
-        let data = await Product.findAll({
+        Product.findAll({
             attributes: {
-                exclude: ['createdAt', 'updatedAt']
+                exclude: ['createdAt', 'updatedAt', 'userId']
             },
             limit: Number(req.query.limit ? req.query.limit : 10),
             offset: Number((((req.query.offset ? req.query.offset : 1) - 1) * (req.query.limit ? req.query.limit : 10))),
             order: [
                 ["id", "ASC"]
             ],
-        })
-        res.status(200).json({
-            response: {
-                products: data,
-                total: data.length
+            where: {
+                userId: {
+                    [Op.eq]: req.query.userId
+                }
             }
+        }).then((res) => {
+            res.status(200).json({
+                response: {
+                    products: data,
+                    total: data.length
+                }
+            })
         })
     } catch (e) {
         res.status(500).send(e);
@@ -53,13 +59,14 @@ exports.createProduct = (req, res) => {
             title: req.body.title,
             quantity: req.body.quantity,
             totleQuantity: req.body.totleQuantity,
+            userId: req.body.userId,
 
-        }).then((pd)=>{
+        }).then((pd) => {
             res.status(200).json({
                 response: pd
             })
         })
-       
+
     } catch (e) {
         res.status(500).send(e);
     }

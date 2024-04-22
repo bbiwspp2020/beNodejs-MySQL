@@ -37,6 +37,14 @@ exports.getUser = async (req, res) => {
           [Op.eq]: req.params.id
         }
       },
+      include: {
+        model:Role,
+        where:{
+          id: {
+            [Op.eq]: req.params.id
+        }
+        }
+      }
     })
     res.status(200).json({
       response: data

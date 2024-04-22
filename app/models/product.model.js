@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Product = sequelize.define("product", {
+    const Products = sequelize.define("product", {
       productName: {
         type: Sequelize.STRING
       },
@@ -15,8 +15,12 @@ module.exports = (sequelize, Sequelize) => {
       totleQuantity:{
         type:Sequelize.INTEGER
       },
+      userId:{
+        type:Sequelize.INTEGER
+      },
+      
     });
   
-    return Product;
+    return Products;
   };
   

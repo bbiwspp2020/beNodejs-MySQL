@@ -33,6 +33,21 @@ db.user.belongsToMany(db.role, {
   through: "user_roles"
 });
 
+
+db.user.belongsToMany(db.product, {
+  through: 'user_products', // ตารางกลางสำหรับการจัดเก็บความสัมพันธ์
+  foreignKey: 'userId', // คอลัมน์ในตารางกลางที่อ้างอิงผู้ใช้
+  otherKey: 'productId', // คอลัมน์ในตารางกลางที่อ้างอิงสินค้า
+});
+
+db.product.belongsToMany(db.user, {
+  through: 'user_products',
+  foreignKey: 'productId',
+  otherKey: 'userId',
+});
+
+console.log(db);
+
 db.roles = ["user", "admin", "moderator"];
 
 module.exports = db;
