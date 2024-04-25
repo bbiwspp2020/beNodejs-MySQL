@@ -1,12 +1,36 @@
 const express = require("express");
 const cors = require("cors");
-
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 const app = express();
-
 var corsOptions = {
   origin: "http://localhost:8081"
 };
 
+const options = {
+  failOnErrors: true, // Whether or not to throw when parsing errors. Defaults to false.
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Hello World',
+      version: '1.0.0',
+    },
+  },
+  apis: ['./app/routes*.js'],
+};
+
+/**
+ * @openapi
+ * /:
+ *   get:
+ *     description: Welcome to swagger-jsdoc!
+ *     responses:
+ *       200:
+ *         description: Returns a mysterious string.
+ */
+
+const openapiSpecification = swaggerJsdoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
